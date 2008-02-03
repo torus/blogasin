@@ -1,0 +1,18 @@
+#!/bin/sh
+
+DATAPATH="$HOME"/src/torus.jp/.data/review
+SCM="$HOME"/src/blogasin/blogasin.scm
+ASIN=$1
+
+DATADIR="$DATAPATH"/`date +x%Y%m`
+
+if [ ! -d $DATADIR ]; then
+    mkdir -p $DATADIR && \
+    svn add $DATADIR
+fi
+
+DATAFILE="$DATADIR"/asin$ASIN.rd
+
+$SCM $ASIN > $DATAFILE || exit 1
+$EDITOR $DATAFILE
+svn add $DATAFILE
